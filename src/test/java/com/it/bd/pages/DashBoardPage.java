@@ -13,24 +13,16 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.it.bd.basedrivers.PageDriver;
 import com.it.bd.utilities.GetScreenShot;
 
-public class LoginPage {
+public class DashBoardPage {
 	ExtentTest test;
 
-	public LoginPage(ExtentTest test) {
+	public DashBoardPage(ExtentTest test) {
 		PageFactory.initElements(PageDriver.getCurrentDriver(), this);
 		this.test = test;
 	}
 
-	@FindBys({
-			@FindBy(xpath = "//body/div[@id='app']/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/form[1]/div[1]/div[1]/div[2]/input[1]"),
-			@FindBy(xpath = "//input[@name=\"username\"]") })
-	WebElement username;
-
-	@FindBy(xpath = "//input[@name=\"password\"]")
-	WebElement password;
-
-	@FindBy(xpath = "//button[@type=\"submit\"]")
-	WebElement loginButton;
+	@FindBy(xpath = "//body/div[@id='app']/div[1]/div[1]/aside[1]/nav[1]/div[2]/ul[1]/li[1]/a[1]")
+	WebElement admin;
 	
 	public void failCase(String message, String scName) throws IOException {
 		test.fail(
@@ -54,42 +46,16 @@ public class LoginPage {
 		test.pass(MediaEntityBuilder.createScreenCaptureFromPath(dest).build());
 	}
 
-	public void login() throws InterruptedException, IOException {
-
+	public void admin() throws IOException {
 		try {
-			test.info("Please enter username");
-			if (username.isDisplayed()) {
-				username.sendKeys("Admin");
-				passCase("Username entered");
-
-				try {
-					test.info("Enter password");
-					if (password.isDisplayed()) {
-						password.sendKeys("admin123");
-						passCase("Password send");
-
-						try {
-							test.info("Click on the login");
-							if (loginButton.isDisplayed()) {
-								loginButton.click();
-								Thread.sleep(10000);
-								passCaseWithSC("Login successfull", "loginPass");
-							}
-						} catch (Exception e) {
-							failCase("Login button was not locateable. Please check the error message",
-									"loginbuttonfail");
-						}
-
-					}
-				} catch (Exception e) {
-					failCase("Password was not locateable. Please check the error message", "passwordfail");
-				}
-
+			test.info("Click on admin");
+			if(admin.isDisplayed()) {
+				admin.click();
+				Thread.sleep(10000);
+				passCaseWithSC("Clicked", "adminpass");
 			}
 		} catch (Exception e) {
-			failCase("Username was not locateable. Please check the error message", "usernamefail");
+			failCase("Admin was not locateable.", "adminfail");
 		}
-
 	}
-
 }
